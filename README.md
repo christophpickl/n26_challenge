@@ -14,6 +14,8 @@ and therefor opened up the field for a lot of potential (and hard to discover) b
 
 Anyway, by using a blocking queue and a thread pool, the `POST /transactions` endpoint now executes in `O(1)` as required :)
 
+See [TransactionsRepository.kt](https://github.com/christophpickl/n26_challenge/blob/master/src/main/kotlin/com/n26/TransactionsRepository.kt) and [PerformanceITest.kt](https://github.com/christophpickl/n26_challenge/blob/master/src/test/kotlin/com/n26/PerformanceITest.kt) for details.
+
 ## Design decisions
 
 As stated above, for me personally simplicity is the key to success.
