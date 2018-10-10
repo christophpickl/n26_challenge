@@ -22,18 +22,13 @@ class TransactionsService(
             return CreationResult.IN_FUTURE
         }
 
-        synchronized(repo) {
-            repo.removeOutdated()
-            repo.add(transaction)
-        }
+        repo.add(transaction)
 
         return CreationResult.OK
     }
 
     fun deleteAll() {
-        synchronized(repo) {
-            repo.clear()
-        }
+        repo.clear()
     }
 
 }

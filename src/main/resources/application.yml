@@ -3,6 +3,8 @@ spring:
     banner-mode: "off"
 
 n26:
+  transactionThreadCount: 20
+  threadShutdownTimeoutInSeconds: 5
   maxTransactionAgeInSeconds: 60
   artificialDelay: false
 
