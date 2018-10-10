@@ -23,7 +23,7 @@ class TransactionsRepositoryImplTest {
 
     @Before
     fun `init repo`() {
-        repo = TransactionsRepositoryImpl(watch, transactionMaxOldInSeconds)
+        repo = TransactionsRepositoryImpl(watch, transactionMaxOldInSeconds, artificalDelay = false)
     }
 
     @Test

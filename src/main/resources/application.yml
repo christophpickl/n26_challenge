@@ -4,3 +4,9 @@ spring:
 
 n26:
   maxTransactionAgeInSeconds: 60
+  artificialDelay: false
+
+logging:
+  level:
+    root: WARN
+    com.n26: TRACE
