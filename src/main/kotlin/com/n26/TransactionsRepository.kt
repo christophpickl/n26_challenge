@@ -1,6 +1,7 @@
 package com.n26
 
 import mu.KotlinLogging.logger
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -8,26 +9,29 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.SECONDS
 import javax.annotation.PreDestroy
 
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 @Configuration
 class TransactionsRepositoryConfiguration {
+
+    @Autowired
+    private lateinit var watch: Watch
+    @Value("\${n26.maxTransactionAgeInSeconds}")
+    private lateinit var maxTransactionAgeInSeconds: java.lang.Long
+    @Value("\${n26.artificialDelay}")
+    private lateinit var artificalDelay: java.lang.Boolean
+
     @Bean
     fun transactionsRepository(
-        watch: Watch,
-        @Value("\${n26.maxTransactionAgeInSeconds}")
-        maxTransactionAgeInSeconds: Long,
-        @Value("\${n26.artificialDelay}")
-        artificalDelay: Boolean,
         @Value("\${n26.transactionThreadCount}")
         transactionThreadCount: Int,
         @Value("\${n26.threadShutdownTimeoutInSeconds}")
         threadShutdownTimeoutInSeconds: Long
     ): TransactionsRepository =
-        AsyncTransactionsRepository(
-            TransactionsRepositoryImpl(
-                watch, maxTransactionAgeInSeconds, artificalDelay
-            ),
-            transactionThreadCount, threadShutdownTimeoutInSeconds)
+        AsyncTransactionsRepository(realTransactionsRepository(), transactionThreadCount, threadShutdownTimeoutInSeconds)
 
+    private fun realTransactionsRepository() = TransactionsRepositoryImpl(
+        watch, maxTransactionAgeInSeconds.toLong(), artificalDelay.booleanValue()
+    )
 }
 
 interface TransactionsRepository {
